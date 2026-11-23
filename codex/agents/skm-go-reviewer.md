@@ -1,0 +1,1 @@
+../../agents/skm-go-reviewer.md

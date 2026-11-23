@@ -1,36 +1,35 @@
 #!/bin/sh
-# Symlink this repo's contents into the harness locations it serves.
-# Does not overwrite existing files unless FORCE=1 is set.
+# Mirror this repo into the harness locations it serves.
+# Replaces (not merges) the target with the repo folder/file:
+# any existing target is removed and a symlink to this repo is created.
 set -eu
 
 REPO="$(cd "$(dirname "$0")" && pwd)"
 
 link() {
   src="$1"; dst="$2"
-  if [ -e "$dst" ] && [ ! -L "$dst" ] && [ "${FORCE:-0}" != 1 ]; then
-    echo "SKIP $dst (exists; set FORCE=1 to overwrite)"
+  parent="$(dirname "$dst")"
+  # Skip gracefully if the harness location does not exist at all
+  if [ ! -e "$parent" ] && [ ! -e "$dst" ]; then
+    echo "SKIP $dst (harness dir $parent does not exist)"
     return
   fi
-  mkdir -p "$(dirname "$dst")"
+  mkdir -p "$parent"
   rm -rf "$dst"
   ln -s "$src" "$dst"
   echo "LINKED $dst -> $src"
 }
 
-# Claude Code global instructions
-link "$REPO/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
-
 # omp global agent definitions
-for f in "$REPO"/agents/*.md; do
-  link "$f" "$HOME/.omp/agent/agents/$(basename "$f")"
-done
+link "$REPO/omp/agents" "$HOME/.omp/agent/agents"
 
 # Codex global agent definitions
-for f in "$REPO"/agents/*.md; do
-  link "$f" "$HOME/.codex/agents/$(basename "$f")"
-done
+link "$REPO/codex/agents" "$HOME/.codex/agents"
 
-# Cross-harness instructions (AGENTS.md is honored by Codex and other agents)
-link "$REPO/AGENTS.md" "$HOME/AGENTS.md"
+# Claude Code global instructions
+link "$REPO/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+
+# Cross-harness instructions
+link "$REPO/claude/AGENTS.md" "$HOME/AGENTS.md"
 
 echo "Done. Commit changes in this repo to share across machines."
