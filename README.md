@@ -4,7 +4,7 @@ Global, portable instructions and subagents shared across harnesses and projects
 
 - `CLAUDE.md` — global instructions (Claude Code, reads from `~/.claude/CLAUDE.md`).
 - `AGENTS.md` — identical content, cross-harness standard read by Codex and other agent harnesses (`~/AGENTS.md`).
-- `agents/*.md` — omp subagent definitions (`skm-*`), symlinked into `~/.omp/agent/agents/`.
+- `agents/*.md` — omp / Codex subagent definitions (`skm-*`), symlinked into `~/.omp/agent/agents/` and `~/.codex/agents/`.
 - `setup.sh` — symlinks the above into each harness's expected location. Idempotent; honors `FORCE=1` to overwrite existing files.
 
 ## Use on a new machine

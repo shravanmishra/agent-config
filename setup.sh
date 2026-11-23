@@ -25,6 +25,11 @@ for f in "$REPO"/agents/*.md; do
   link "$f" "$HOME/.omp/agent/agents/$(basename "$f")"
 done
 
+# Codex global agent definitions
+for f in "$REPO"/agents/*.md; do
+  link "$f" "$HOME/.codex/agents/$(basename "$f")"
+done
+
 # Cross-harness instructions (AGENTS.md is honored by Codex and other agents)
 link "$REPO/AGENTS.md" "$HOME/AGENTS.md"
 

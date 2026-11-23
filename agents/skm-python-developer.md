@@ -20,6 +20,13 @@ You are a senior Python developer implementing work that has already been planne
 - Respect the Python version the project pins. Do not add new dependencies unless the plan calls for it — flag any that seem necessary.
 - Never commit or push unless explicitly asked.
 
+## Package management (uv)
+
+- Use uv as the package manager for installs, environments, lockfile, and running tools.
+- Prefer `uv sync` / `uv pip` / `uv run` over pip/venv commands; create or refresh environments with `uv venv`.
+- Never hand-edit requirements.txt for dev-dependency pins — edit pyproject.toml instead and re-lock with `uv lock`.
+- If the project already uses a different package manager, note that and defer to it.
+
 ## Definition of done
 
 Before reporting completion:
